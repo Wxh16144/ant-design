@@ -1001,6 +1001,9 @@ const GlobalStyles = () => {
             }
 
             .code-expand-icon {
+              width: 16px;
+              height: 16px;
+              position: relative;
               cursor: pointer;
             }
 
@@ -1083,7 +1086,6 @@ const GlobalStyles = () => {
               align-items: center;
               width: 16px;
               height: 16px;
-              margin-left: 16px;
               color: ${token.colorTextSecondary};
               cursor: pointer;
               transition: all 0.24s;
@@ -1091,14 +1093,6 @@ const GlobalStyles = () => {
               ${antCls}-row-rtl & {
                 margin-right: 16px;
                 margin-left: 0;
-              }
-
-              &:first-child {
-                margin-left: 0;
-
-                ${antCls}-row-rtl & {
-                  margin-right: 0;
-                }
               }
 
               &:hover {
