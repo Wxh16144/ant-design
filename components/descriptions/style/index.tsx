@@ -154,11 +154,9 @@ const genDescriptionStyles: GenerateStyle<DescriptionsToken> = (token: Descripti
         '&-container': {
           display: 'flex',
           [`${componentCls}-item-label`]: {
-            display: 'inline-flex',
             alignItems: 'baseline',
           },
           [`${componentCls}-item-content`]: {
-            display: 'inline-flex',
             alignItems: 'baseline',
           },
         },
