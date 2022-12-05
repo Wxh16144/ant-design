@@ -2,7 +2,7 @@ import React from 'react';
 import type { DescriptionsProps } from 'antd';
 import { Divider, Descriptions, Switch, Form, Radio } from 'antd';
 
-type Props = Pick<DescriptionsProps, 'bordered' | 'layout'>;
+type Props = Pick<DescriptionsProps, 'bordered' | 'layout' | 'size'>;
 
 const useSettingForm = (initialValues: Props = {}) => {
   const [props, setProps] = React.useState<Props>(initialValues);
