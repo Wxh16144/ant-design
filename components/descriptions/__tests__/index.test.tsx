@@ -1,5 +1,6 @@
 import MockDate from 'mockdate';
 import React from 'react';
+import type { DescriptionsProps } from '..';
 import Descriptions from '..';
 import mountTest from '../../../tests/shared/mountTest';
 import { resetWarned } from '../../_util/warning';
@@ -255,5 +256,35 @@ describe('Descriptions', () => {
       </Descriptions>,
     );
     expect(wrapper.container.firstChild).toMatchSnapshot();
+  });
+
+  describe('Descriptions nesting', () => {
+    const NestDescriptions = (props: DescriptionsProps) => (
+      <Descriptions {...props}>
+        <Descriptions.Item>A</Descriptions.Item>
+        <Descriptions.Item>
+          <Descriptions>
+            <Descriptions.Item>B</Descriptions.Item>
+            <Descriptions.Item>
+              <Descriptions>
+                <Descriptions.Item>C</Descriptions.Item>
+                <Descriptions.Item>Child</Descriptions.Item>
+              </Descriptions>
+            </Descriptions.Item>
+          </Descriptions>
+        </Descriptions.Item>
+      </Descriptions>
+    );
+    it('Size should be passed down', () => {
+      const { container } = render(<NestDescriptions size="small" />);
+      expect(container.querySelectorAll('.ant-descriptions-small')).toHaveLength(3);
+    });
+    it('Bordered should be passed down', () => {
+      const { container } = render(<NestDescriptions bordered />);
+      expect(container.querySelectorAll('.ant-descriptions-bordered')).toHaveLength(3);
+    });
+
+    const { container } = render(<NestDescriptions />);
+    expect(container.firstChild).toMatchSnapshot();
   });
 });
