@@ -12,9 +12,15 @@ import Row from './Row';
 
 import useStyle from './style';
 
+type SizeType = 'default' | 'middle' | 'small';
+type LayoutType = 'horizontal' | 'vertical';
+
 export interface DescriptionsContextProps {
   labelStyle?: React.CSSProperties;
   contentStyle?: React.CSSProperties;
+  size?: SizeType;
+  bordered?: boolean;
+  layout?: LayoutType;
 }
 
 export const DescriptionsContext = React.createContext<DescriptionsContextProps>({});
@@ -103,33 +109,41 @@ export interface DescriptionsProps {
   className?: string;
   style?: React.CSSProperties;
   bordered?: boolean;
-  size?: 'middle' | 'small' | 'default';
+  size?: SizeType;
   children?: React.ReactNode;
   title?: React.ReactNode;
   extra?: React.ReactNode;
   column?: number | Partial<Record<Breakpoint, number>>;
-  layout?: 'horizontal' | 'vertical';
+  layout?: LayoutType;
   colon?: boolean;
   labelStyle?: React.CSSProperties;
   contentStyle?: React.CSSProperties;
 }
 
-function Descriptions({
-  prefixCls: customizePrefixCls,
-  title,
-  extra,
-  column = DEFAULT_COLUMN_MAP,
-  colon = true,
-  bordered,
-  layout,
-  children,
-  className,
-  style,
-  size,
-  labelStyle,
-  contentStyle,
-}: DescriptionsProps) {
+function Descriptions(props: DescriptionsProps) {
   const { getPrefixCls, direction } = React.useContext(ConfigContext);
+  const {
+    size: contextSize,
+    bordered: contextBordered,
+    layout: contextLayout,
+  } = React.useContext(DescriptionsContext);
+
+  const {
+    prefixCls: customizePrefixCls,
+    title,
+    extra,
+    column = DEFAULT_COLUMN_MAP,
+    colon = true,
+    bordered = contextBordered,
+    layout = contextLayout || 'horizontal',
+    children,
+    className,
+    style,
+    size = contextSize || 'default',
+    labelStyle,
+    contentStyle,
+  } = props;
+
   const prefixCls = getPrefixCls('descriptions', customizePrefixCls);
   const [screens, setScreens] = React.useState<ScreenMap>({});
   const mergedColumn = getColumn(column, screens);
@@ -153,8 +167,8 @@ function Descriptions({
   // Children
   const rows = getRows(children, mergedColumn);
   const contextValue = React.useMemo(
-    () => ({ labelStyle, contentStyle }),
-    [labelStyle, contentStyle],
+    () => ({ labelStyle, contentStyle, size, bordered, layout }),
+    [labelStyle, contentStyle, size, bordered, layout],
   );
 
   return wrapSSR(
@@ -163,7 +177,7 @@ function Descriptions({
         className={classNames(
           prefixCls,
           {
-            [`${prefixCls}-${size}`]: size && size !== 'default',
+            [`${prefixCls}-${size}`]: size !== 'default',
             [`${prefixCls}-bordered`]: !!bordered,
             [`${prefixCls}-rtl`]: direction === 'rtl',
           },
