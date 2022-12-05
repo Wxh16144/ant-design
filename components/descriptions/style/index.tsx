@@ -25,38 +25,44 @@ const genBorderedStyle = (token: DescriptionsToken): CSSObject => {
   } = token;
   return {
     [`&${componentCls}-bordered`]: {
-      [`${componentCls}-view`]: {
+      [`> ${componentCls}-view`]: {
         border: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
         '> table': {
           tableLayout: 'auto',
           borderCollapse: 'collapse',
+          '> tbody': {
+            [`> ${componentCls}-row`]: {
+              borderBottom: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
+              '&:last-child': {
+                borderBottom: 'none',
+              },
+              [`
+                > ${componentCls}-item-label,
+                > ${componentCls}-item-content
+              `]: {
+                padding: descriptionsDefaultPadding,
+                borderInlineEnd: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
+                '&:last-child': {
+                  borderInlineEnd: 'none',
+                },
+              },
+              [`> ${componentCls}-item-label`]: {
+                backgroundColor: descriptionsBg,
+                '&::after': {
+                  display: 'none',
+                },
+              },
+            },
+          },
         },
       },
-      [`${componentCls}-item-label, ${componentCls}-item-content`]: {
-        padding: descriptionsDefaultPadding,
-        borderInlineEnd: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
-        '&:last-child': {
-          borderInlineEnd: 'none',
-        },
-      },
-      [`${componentCls}-item-label`]: {
-        backgroundColor: descriptionsBg,
-        '&::after': {
-          display: 'none',
-        },
-      },
-      [`${componentCls}-row`]: {
-        borderBottom: `${token.lineWidth}px ${token.lineType} ${token.colorSplit}`,
-        '&:last-child': {
-          borderBottom: 'none',
-        },
-      },
-      [`&${componentCls}-middle`]: {
+
+      [`&${componentCls}-middle > ${componentCls}-view > table > tbody > ${componentCls}-row`]: {
         [`${componentCls}-item-label, ${componentCls}-item-content`]: {
           padding: descriptionsMiddlePadding,
         },
       },
-      [`&${componentCls}-small`]: {
+      [`&${componentCls}-small > ${componentCls}-view > table > tbody > ${componentCls}-row`]: {
         [`${componentCls}-item-label, ${componentCls}-item-content`]: {
           padding: descriptionsSmallPadding,
         },
@@ -163,18 +169,14 @@ const genDescriptionStyles: GenerateStyle<DescriptionsToken> = (token: Descripti
           },
         },
       },
-      '&-middle': {
-        [`${componentCls}-row`]: {
-          '> th, > td': {
-            paddingBottom: token.paddingSM,
-          },
+      [`&${componentCls}-middle > ${componentCls}-view > table > tbody > ${componentCls}-row`]: {
+        '> th, > td': {
+          paddingBottom: token.paddingSM,
         },
       },
-      '&-small': {
-        [`${componentCls}-row`]: {
-          '> th, > td': {
-            paddingBottom: token.paddingXS,
-          },
+      [`&${componentCls}-small > ${componentCls}-view > table > tbody > ${componentCls}-row`]: {
+        '> th, > td': {
+          paddingBottom: token.paddingXS,
         },
       },
     },
