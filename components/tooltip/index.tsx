@@ -11,7 +11,6 @@ import { getTransitionName } from '../_util/motion';
 import type { AdjustOverflow, PlacementsConfig } from '../_util/placements';
 import getPlacements from '../_util/placements';
 import { cloneElement, isValidElement, isFragment } from '../_util/reactNode';
-import type { LiteralUnion } from '../_util/type';
 import warning from '../_util/warning';
 import PurePanel from './PurePanel';
 import useStyle from './style';
@@ -71,7 +70,7 @@ interface LegacyTooltipProps
 export interface AbstractTooltipProps extends LegacyTooltipProps {
   style?: React.CSSProperties;
   className?: string;
-  color?: LiteralUnion<PresetColorType, string>;
+  color?: PresetColorType | React.CSSProperties['color'];
   placement?: TooltipPlacement;
   builtinPlacements?: typeof Placements;
   openClassName?: string;

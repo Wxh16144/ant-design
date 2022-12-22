@@ -8,14 +8,13 @@ import Wave from '../_util/wave';
 import warning from '../_util/warning';
 import CheckableTag from './CheckableTag';
 import useStyle from './style';
-import type { LiteralUnion } from '../_util/type';
 
 export type { CheckableTagProps } from './CheckableTag';
 
 export interface TagProps extends React.HTMLAttributes<HTMLSpanElement> {
   prefixCls?: string;
   className?: string;
-  color?: LiteralUnion<PresetColorType | PresetStatusColorType, string>;
+  color?: PresetColorType | PresetStatusColorType | React.CSSProperties['color'];
   closable?: boolean;
   closeIcon?: React.ReactNode;
   /** @deprecated `visible` will be removed in next major version. */
