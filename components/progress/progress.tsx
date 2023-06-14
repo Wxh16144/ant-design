@@ -5,9 +5,9 @@ import CloseOutlined from '@ant-design/icons/CloseOutlined';
 import classNames from 'classnames';
 import omit from 'rc-util/lib/omit';
 import * as React from 'react';
+import warning from '../_util/warning';
 import type { ConfigConsumerProps } from '../config-provider';
 import { ConfigContext } from '../config-provider';
-import warning from '../_util/warning';
 import Circle from './Circle';
 import Line from './Line';
 import Steps from './Steps';
@@ -15,7 +15,7 @@ import useStyle from './style';
 import { getSize, getSuccessPercent, validProgress } from './utils';
 
 export const ProgressTypes = ['line', 'circle', 'dashboard'] as const;
-export type ProgressType = typeof ProgressTypes[number];
+export type ProgressType = (typeof ProgressTypes)[number];
 const ProgressStatuses = ['normal', 'exception', 'active', 'success'] as const;
 export type ProgressSize = 'default' | 'small';
 export type StringGradients = { [percentage: string]: string };
@@ -29,14 +29,16 @@ export interface SuccessProps {
   strokeColor?: string;
 }
 
-export interface ProgressProps {
+export type ProgressAriaProps = Pick<React.AriaAttributes, 'aria-label' | 'aria-labelledby'>;
+
+export interface ProgressProps extends ProgressAriaProps {
   prefixCls?: string;
   className?: string;
   rootClassName?: string;
   type?: ProgressType;
   percent?: number;
   format?: (percent?: number, successPercent?: number) => React.ReactNode;
-  status?: typeof ProgressStatuses[number];
+  status?: (typeof ProgressStatuses)[number];
   showInfo?: boolean;
   strokeWidth?: number;
   strokeLinecap?: 'butt' | 'square' | 'round';
@@ -55,7 +57,7 @@ export interface ProgressProps {
   children?: React.ReactNode;
 }
 
-const Progress: React.FC<ProgressProps> = (props) => {
+const Progress = React.forwardRef<HTMLDivElement, ProgressProps>((props, ref) => {
   const {
     prefixCls: customizePrefixCls,
     className,
@@ -79,7 +81,7 @@ const Progress: React.FC<ProgressProps> = (props) => {
     );
   }, [percent, props.success, props.successPercent]);
 
-  const progressStatus = React.useMemo<typeof ProgressStatuses[number]>(() => {
+  const progressStatus = React.useMemo<(typeof ProgressStatuses)[number]>(() => {
     if (!ProgressStatuses.includes(status!) && percentNumber >= 100) {
       return 'success';
     }
@@ -172,8 +174,10 @@ const Progress: React.FC<ProgressProps> = (props) => {
 
   return wrapSSR(
     <div
+      ref={ref}
       className={classString}
       role="progressbar"
+      aria-valuenow={percentNumber}
       {...omit(restProps, [
         'trailColor',
         'strokeWidth',
@@ -188,7 +192,7 @@ const Progress: React.FC<ProgressProps> = (props) => {
       {progress}
     </div>,
   );
-};
+});
 
 if (process.env.NODE_ENV !== 'production') {
   Progress.displayName = 'Progress';

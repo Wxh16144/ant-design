@@ -7,14 +7,13 @@ import { genComponentStyleHook, mergeToken } from '../../theme/internal';
 import genGroupStyle from './group';
 
 /** Component only token. Which will handle additional calculation of alias token */
-export interface ComponentToken {
-  buttonFontWeight: number;
-}
+export interface ComponentToken {}
 
 export interface ButtonToken extends FullToken<'Button'> {
   colorOutlineDefault: string;
   buttonPaddingHorizontal: number;
   buttonIconOnlyFontSize: number;
+  buttonFontWeight: number;
 }
 
 // ============================== Shared ==============================
@@ -39,6 +38,10 @@ const genSharedButtonStyle: GenerateStyle<ButtonToken, CSSObject> = (token): CSS
       lineHeight: token.lineHeight,
       color: token.colorText,
 
+      '&:disabled > *': {
+        pointerEvents: 'none',
+      },
+
       '> span': {
         display: 'inline-block',
       },
@@ -48,15 +51,14 @@ const genSharedButtonStyle: GenerateStyle<ButtonToken, CSSObject> = (token): CSS
       },
 
       // Leave a space between icon and text.
+      [`> ${iconCls} + span, > span + ${iconCls}`]: {
+        marginInlineStart: token.marginXS,
+      },
+
       [`&:not(${componentCls}-icon-only) > ${componentCls}-icon`]: {
         [`&${componentCls}-loading-icon, &:not(:last-child)`]: {
           marginInlineEnd: token.marginXS,
         },
-      },
-
-      // Special case for anticon after children
-      [`> span + ${iconCls}`]: {
-        marginInlineStart: token.marginXS,
       },
 
       '> a': {
@@ -507,41 +509,36 @@ const genBlockButtonStyle: GenerateStyle<ButtonToken> = (token) => {
 };
 
 // ============================== Export ==============================
-export default genComponentStyleHook(
-  'Button',
-  (token) => {
-    const { controlTmpOutline, paddingContentHorizontal } = token;
+export default genComponentStyleHook('Button', (token) => {
+  const { controlTmpOutline, paddingContentHorizontal } = token;
 
-    const buttonToken = mergeToken<ButtonToken>(token, {
-      colorOutlineDefault: controlTmpOutline,
-      buttonPaddingHorizontal: paddingContentHorizontal,
-      buttonIconOnlyFontSize: token.fontSizeLG,
-    });
-
-    return [
-      // Shared
-      genSharedButtonStyle(buttonToken),
-
-      // Size
-      genSizeSmallButtonStyle(buttonToken),
-      genSizeBaseButtonStyle(buttonToken),
-      genSizeLargeButtonStyle(buttonToken),
-
-      // Block
-      genBlockButtonStyle(buttonToken),
-
-      // Group (type, ghost, danger, disabled, loading)
-      genTypeButtonStyle(buttonToken),
-
-      // Button Group
-      genGroupStyle(buttonToken),
-
-      // Space Compact
-      genCompactItemStyle(token),
-      genCompactItemVerticalStyle(token),
-    ];
-  },
-  {
+  const buttonToken = mergeToken<ButtonToken>(token, {
+    colorOutlineDefault: controlTmpOutline,
+    buttonPaddingHorizontal: paddingContentHorizontal,
+    buttonIconOnlyFontSize: token.fontSizeLG,
     buttonFontWeight: 400,
-  },
-);
+  });
+
+  return [
+    // Shared
+    genSharedButtonStyle(buttonToken),
+
+    // Size
+    genSizeSmallButtonStyle(buttonToken),
+    genSizeBaseButtonStyle(buttonToken),
+    genSizeLargeButtonStyle(buttonToken),
+
+    // Block
+    genBlockButtonStyle(buttonToken),
+
+    // Group (type, ghost, danger, disabled, loading)
+    genTypeButtonStyle(buttonToken),
+
+    // Button Group
+    genGroupStyle(buttonToken),
+
+    // Space Compact
+    genCompactItemStyle(token),
+    genCompactItemVerticalStyle(token),
+  ];
+});

@@ -119,6 +119,13 @@ module.exports = {
         'react/no-danger': 0,
       },
     },
+    {
+      files: ['**/*.json'],
+      rules: {
+        'no-unused-expressions': 0,
+        'comma-dangle': 0,
+      },
+    },
   ],
   rules: {
     'react/jsx-one-expression-per-line': 0,
@@ -189,7 +196,7 @@ module.exports = {
     'unicorn/better-regex': 2,
     'unicorn/prefer-string-trim-start-end': 2,
     'unicorn/expiring-todo-comments': 2,
-    'unicorn/no-abusive-eslint-disable': 2,
+    'unicorn/no-abusive-eslint-disable': 0,
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/2540#issuecomment-692866111
     'no-use-before-define': 0,
