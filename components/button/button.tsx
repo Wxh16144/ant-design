@@ -18,12 +18,12 @@ import DisabledContext from '../config-provider/DisabledContext';
 import type { SizeType } from '../config-provider/SizeContext';
 import SizeContext from '../config-provider/SizeContext';
 import { useCompactItemContext } from '../space/Compact';
+import IconWrapper from './IconWrapper';
 import LoadingIcon from './LoadingIcon';
 import Group, { GroupSizeContext } from './button-group';
 import type { ButtonHTMLType, ButtonShape, ButtonType } from './buttonHelpers';
 import { isTwoCNChar, isUnBorderedButtonType, spaceChildren } from './buttonHelpers';
 import useStyle from './style';
-import IconWrapper from './IconWrapper';
 
 export type LegacyButtonType = ButtonType | 'danger';
 
@@ -217,13 +217,15 @@ const InternalButton: React.ForwardRefRenderFunction<
   const linkButtonRestProps = omit(rest as ButtonProps & { navigate: any }, ['navigate']);
 
   const hrefAndDisabled = linkButtonRestProps.href !== undefined && mergedDisabled;
+  const isDisabledClass = mergedDisabled && type !== 'link';
+  const isTypeClass = type && !hrefAndDisabled;
 
   const classes = classNames(
     prefixCls,
     hashId,
     {
       [`${prefixCls}-${shape}`]: shape !== 'default' && shape,
-      [`${prefixCls}-${type}`]: type,
+      [`${prefixCls}-${type}`]: isTypeClass,
       [`${prefixCls}-${sizeCls}`]: sizeCls,
       [`${prefixCls}-icon-only`]: !children && children !== 0 && !!iconType,
       [`${prefixCls}-background-ghost`]: ghost && !isUnBorderedButtonType(type),
@@ -232,7 +234,7 @@ const InternalButton: React.ForwardRefRenderFunction<
       [`${prefixCls}-block`]: block,
       [`${prefixCls}-dangerous`]: !!danger,
       [`${prefixCls}-rtl`]: direction === 'rtl',
-      [`${prefixCls}-disabled`]: hrefAndDisabled,
+      [`${prefixCls}-disabled`]: isDisabledClass,
     },
     compactItemClassnames,
     className,
@@ -254,6 +256,7 @@ const InternalButton: React.ForwardRefRenderFunction<
   if (linkButtonRestProps.href !== undefined) {
     return wrapSSR(
       <a
+        disabled={mergedDisabled}
         {...linkButtonRestProps}
         className={classes}
         onClick={handleClick}
