@@ -11,6 +11,7 @@ import type { AliasToken, MappingAlgorithm, OverrideToken } from '../theme/inter
 import type { SizeType } from './SizeContext';
 import type { RenderEmptyHandler } from './defaultRenderEmpty';
 import type { ShowWaveEffect } from '../_util/wave/interface';
+import type { DrawerProps } from '../drawer';
 
 export const defaultIconPrefixCls = 'anticon';
 
@@ -57,6 +58,8 @@ export interface ButtonConfig extends ComponentStyleConfig {
   classNames?: ButtonProps['classNames'];
   styles?: ButtonProps['styles'];
 }
+
+export interface DrawerConfig extends ComponentStyleConfig, Pick<DrawerProps, 'getContainer'> {}
 
 export type PopupOverflow = 'viewport' | 'scroll';
 
@@ -109,7 +112,7 @@ export interface ConfigConsumerProps {
   anchor?: ComponentStyleConfig;
   button?: ButtonConfig;
   divider?: ComponentStyleConfig;
-  drawer?: ComponentStyleConfig;
+  drawer?: DrawerConfig;
   calendar?: ComponentStyleConfig;
   carousel?: ComponentStyleConfig;
   cascader?: ComponentStyleConfig;

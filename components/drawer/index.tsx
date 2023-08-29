@@ -72,11 +72,16 @@ const Drawer: React.FC<DrawerProps> & {
   // Style
   const [wrapSSR, hashId] = useStyle(prefixCls);
 
-  const getContainer =
-    // 有可能为 false，所以不能直接判断
-    customizeGetContainer === undefined && getPopupContainer
-      ? () => getPopupContainer(document.body)
-      : customizeGetContainer;
+  // ========================== Merged GetContainer ==========================
+  let getContainer: DrawerProps['getContainer'];
+  if (customizeGetContainer !== undefined) {
+    getContainer = customizeGetContainer;
+  } else {
+    const mergedGetContainer = drawer?.getContainer ?? getPopupContainer;
+    if (typeof mergedGetContainer === 'function') {
+      getContainer = () => mergedGetContainer(document.body);
+    }
+  }
 
   const drawerClassName = classNames(
     {

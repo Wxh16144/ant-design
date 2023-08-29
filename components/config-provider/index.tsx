@@ -27,6 +27,7 @@ import type {
   ConfigConsumerProps,
   CSPConfig,
   DirectionType,
+  DrawerConfig,
   PopupOverflow,
   Theme,
   ThemeConfig,
@@ -150,7 +151,7 @@ export interface ConfigProviderProps {
   cascader?: ComponentStyleConfig;
   collapse?: ComponentStyleConfig;
   divider?: ComponentStyleConfig;
-  drawer?: ComponentStyleConfig;
+  drawer?: DrawerConfig;
   typography?: ComponentStyleConfig;
   skeleton?: ComponentStyleConfig;
   spin?: ComponentStyleConfig;
