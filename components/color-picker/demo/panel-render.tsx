@@ -2,9 +2,8 @@ import React from 'react';
 import { Col, ColorPicker, Divider, Row, Space, theme } from 'antd';
 import type { ColorPickerProps } from 'antd';
 import { generate, green, presetPalettes, red } from '@ant-design/colors';
-import { create, upperFirst } from 'lodash';
+import { upperFirst } from 'lodash';
 import { TinyColor } from '@ctrl/tinycolor';
-import { createStyles } from 'antd-style';
 
 type Presets = Required<ColorPickerProps>['presets'][number];
 
@@ -20,17 +19,8 @@ const genPresets = (presets = presetPalettes) =>
     ],
   }));
 
-const useStyle = createStyles(({ css, prefixCls }) => ({
-  horizontalLayout: css`
-    .${prefixCls}-color-picker-inner-content {
-      width: 100%;
-    }
-  `,
-}));
-
 const HorizontalLayoutDemo = () => {
   const { token } = theme.useToken();
-  const { styles } = useStyle();
 
   const presets = React.useMemo(
     () =>
@@ -47,7 +37,7 @@ const HorizontalLayoutDemo = () => {
     { components: { Picker, Presets } },
   ) => (
     <Row justify="space-between">
-      <Col span={12} flex={1}>
+      <Col span={12}>
         <Presets />
       </Col>
       <Divider type="vertical" style={{ height: 'auto' }} />
@@ -62,7 +52,6 @@ const HorizontalLayoutDemo = () => {
       open
       styles={{ popupOverlayInner: { width: 480 } }}
       presets={presets}
-      rootClassName={styles.horizontalLayout}
       panelRender={customPanelRender}
     />
   );
