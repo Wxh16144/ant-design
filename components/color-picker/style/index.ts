@@ -190,7 +190,7 @@ const genColorPickerStyle: GenerateStyle<ColorPickerToken> = (token) => {
             flexDirection: 'column',
             width: colorPickerWidth,
 
-            [`&${innerContent}-divider`]: {
+            [`${innerContent}-divider`]: {
               margin: `${marginSM}px 0 ${marginXS}px`,
             },
           },
