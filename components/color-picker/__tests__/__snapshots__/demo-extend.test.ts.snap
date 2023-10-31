@@ -3893,7 +3893,7 @@ exports[`renders components/color-picker/demo/panel-render.tsx extend context co
                 class="ant-popover-inner-content"
               >
                 <div
-                  class="ant-color-picker-inner-content"
+                  class="ant-color-picker-inner-content ant-color-picker-inner-content-customized"
                 >
                   <div
                     class="custom-panel"
@@ -4267,7 +4267,7 @@ exports[`renders components/color-picker/demo/panel-render.tsx extend context co
         class="ant-space-item"
       >
         <div
-          class="ant-color-picker-trigger acss-17q1ndy ant-popover-open ant-color-picker-trigger-active"
+          class="ant-color-picker-trigger ant-popover-open ant-color-picker-trigger-active"
         >
           <div
             class="ant-color-picker-color-block"
@@ -4279,7 +4279,7 @@ exports[`renders components/color-picker/demo/panel-render.tsx extend context co
           </div>
         </div>
         <div
-          class="ant-popover ant-zoom-big-appear ant-zoom-big-appear-prepare ant-zoom-big ant-color-picker acss-17q1ndy ant-popover-placement-bottomLeft"
+          class="ant-popover ant-zoom-big-appear ant-zoom-big-appear-prepare ant-zoom-big ant-color-picker ant-popover-placement-bottomLeft"
           style="--arrow-x: 0px; --arrow-y: 0px; left: -1000vw; top: -1000vh; box-sizing: border-box;"
         >
           <div
@@ -4298,14 +4298,13 @@ exports[`renders components/color-picker/demo/panel-render.tsx extend context co
                 class="ant-popover-inner-content"
               >
                 <div
-                  class="ant-color-picker-inner-content"
+                  class="ant-color-picker-inner-content ant-color-picker-inner-content-customized"
                 >
                   <div
                     class="ant-row ant-row-space-between"
                   >
                     <div
                       class="ant-col ant-col-12"
-                      style="flex: 1 1 auto;"
                     >
                       <div
                         class="ant-color-picker-presets"
