@@ -4267,7 +4267,7 @@ exports[`renders components/color-picker/demo/panel-render.tsx extend context co
         class="ant-space-item"
       >
         <div
-          class="ant-color-picker-trigger ant-popover-open ant-color-picker-trigger-active"
+          class="ant-color-picker-trigger"
         >
           <div
             class="ant-color-picker-color-block"
