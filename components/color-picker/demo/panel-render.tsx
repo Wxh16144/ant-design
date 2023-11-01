@@ -1,36 +1,25 @@
 import React from 'react';
 import { Col, ColorPicker, Divider, Row, Space, theme } from 'antd';
 import type { ColorPickerProps } from 'antd';
-import { generate, green, presetPalettes, red } from '@ant-design/colors';
-import { upperFirst } from 'lodash';
-import { TinyColor } from '@ctrl/tinycolor';
+import { generate, green, presetPalettes, red, cyan } from '@ant-design/colors';
 
 type Presets = Required<ColorPickerProps>['presets'][number];
 
 const genPresets = (presets = presetPalettes) =>
   Object.entries(presets).map<Presets>(([label, colors]) => ({
-    label: upperFirst(label),
-    colors: [
-      ...colors,
-      ...colors.map(
-        // Add transparency
-        (color, idx) => new TinyColor(color).setAlpha(idx / 10).toHex8String(),
-      ),
-    ],
+    label,
+    colors,
   }));
 
 const HorizontalLayoutDemo = () => {
   const { token } = theme.useToken();
 
-  const presets = React.useMemo(
-    () =>
-      genPresets({
-        primary: generate(token.colorPrimary),
-        red,
-        green,
-      }),
-    [token.colorPrimary],
-  );
+  const presets = genPresets({
+    primary: generate(token.colorPrimary),
+    red,
+    green,
+    cyan,
+  });
 
   const customPanelRender: ColorPickerProps['panelRender'] = (
     _,
@@ -59,7 +48,7 @@ const HorizontalLayoutDemo = () => {
 const BasicDemo = () => (
   <ColorPicker
     panelRender={(panel) => (
-      <div className="custom-panel">
+      <div className="custom-panel" style={{ width: 280 }}>
         <div
           style={{
             fontSize: 12,
