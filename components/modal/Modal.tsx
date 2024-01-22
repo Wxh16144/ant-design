@@ -1,6 +1,6 @@
 import * as React from 'react';
 import CloseOutlined from '@ant-design/icons/CloseOutlined';
-import classNames from 'classnames';
+import cx from 'classnames';
 import Dialog from 'rc-dialog';
 
 import useClosable from '../_util/hooks/useClosable';
@@ -17,6 +17,7 @@ import { Footer, renderCloseIcon } from './shared';
 import useStyle from './style';
 import { useZIndex } from '../_util/hooks/useZIndex';
 import useCSSVarCls from '../config-provider/hooks/useCSSVarCls';
+import useClasses from '../config-provider/hooks/useClasses';
 
 let mousePosition: MousePosition;
 
@@ -86,7 +87,7 @@ const Modal: React.FC<ModalProps> = (props) => {
 
     width = 520,
     footer,
-    classNames: modalClassNames,
+    classNames: customizeClassNames,
     styles: modalStyles,
     ...restProps
   } = props;
@@ -97,9 +98,14 @@ const Modal: React.FC<ModalProps> = (props) => {
   const rootCls = useCSSVarCls(prefixCls);
   const [wrapCSSVar, hashId, cssVarCls] = useStyle(prefixCls, rootCls);
 
-  const wrapClassNameExtended = classNames(wrapClassName, {
+  const wrapClassNameExtended = cx(wrapClassName, {
     [`${prefixCls}-centered`]: !!centered,
     [`${prefixCls}-wrap-rtl`]: direction === 'rtl',
+  });
+
+  // ============================ classNames ============================
+  const classNames = useClasses('modal', customizeClassNames, {
+    wrapper: wrapClassNameExtended,
   });
 
   const dialogFooter = footer !== null && (
@@ -131,7 +137,7 @@ const Modal: React.FC<ModalProps> = (props) => {
             zIndex={zIndex}
             getContainer={getContainer === undefined ? getContextPopupContainer : getContainer}
             prefixCls={prefixCls}
-            rootClassName={classNames(hashId, rootClassName, cssVarCls, rootCls)}
+            rootClassName={cx(hashId, rootClassName, cssVarCls, rootCls)}
             footer={dialogFooter}
             visible={open ?? visible}
             mousePosition={restProps.mousePosition ?? mousePosition}
@@ -141,13 +147,9 @@ const Modal: React.FC<ModalProps> = (props) => {
             focusTriggerAfterClose={focusTriggerAfterClose}
             transitionName={getTransitionName(rootPrefixCls, 'zoom', props.transitionName)}
             maskTransitionName={getTransitionName(rootPrefixCls, 'fade', props.maskTransitionName)}
-            className={classNames(hashId, className, modal?.className)}
+            className={cx(hashId, className, modal?.className)}
             style={{ ...modal?.style, ...style }}
-            classNames={{
-              ...modal?.classNames,
-              ...modalClassNames,
-              wrapper: classNames(wrapClassNameExtended, modalClassNames?.wrapper),
-            }}
+            classNames={classNames}
             styles={{
               ...modal?.styles,
               ...modalStyles,

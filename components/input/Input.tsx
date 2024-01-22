@@ -1,5 +1,5 @@
 import React, { forwardRef, useContext, useEffect, useRef } from 'react';
-import classNames from 'classnames';
+import cx from 'classnames';
 import type { InputProps as RcInputProps, InputRef } from 'rc-input';
 import RcInput from 'rc-input';
 import { composeRef } from 'rc-util/lib/ref';
@@ -20,6 +20,7 @@ import useCSSVarCls from '../config-provider/hooks/useCSSVarCls';
 import type { Variant } from '../form/hooks/useVariants';
 import useVariant from '../form/hooks/useVariants';
 import getAllowClear from '../_util/getAllowClear';
+import useClasses from '../config-provider/hooks/useClasses';
 
 export interface InputFocusOptions extends FocusOptions {
   cursor?: 'start' | 'end' | 'all';
@@ -93,7 +94,7 @@ const Input = forwardRef<InputRef, InputProps>((props, ref) => {
     styles,
     rootClassName,
     onChange,
-    classNames: classes,
+    classNames: customizeClassNames,
     variant: customVariant,
     ...rest
   } = props;
@@ -175,6 +176,48 @@ const Input = forwardRef<InputRef, InputProps>((props, ref) => {
   const mergedAllowClear = getAllowClear(allowClear);
   const [variant, enableVariantCls] = useVariant(customVariant, bordered);
 
+  // ============================ classNames ============================
+  const classNames = useClasses('input', customizeClassNames, {
+    input: cx(
+      {
+        [`${prefixCls}-sm`]: mergedSize === 'small',
+        [`${prefixCls}-lg`]: mergedSize === 'large',
+        [`${prefixCls}-rtl`]: direction === 'rtl',
+      },
+      hashId,
+    ),
+    variant: cx(
+      {
+        [`${prefixCls}-${variant}`]: enableVariantCls,
+      },
+      getStatusClassNames(prefixCls, mergedStatus),
+    ),
+    affixWrapper: cx(
+      {
+        [`${prefixCls}-affix-wrapper-sm`]: mergedSize === 'small',
+        [`${prefixCls}-affix-wrapper-lg`]: mergedSize === 'large',
+        [`${prefixCls}-affix-wrapper-rtl`]: direction === 'rtl',
+      },
+      hashId,
+    ),
+    wrapper: cx(
+      {
+        [`${prefixCls}-group-rtl`]: direction === 'rtl',
+      },
+      hashId,
+    ),
+    groupWrapper: cx(
+      {
+        [`${prefixCls}-group-wrapper-sm`]: mergedSize === 'small',
+        [`${prefixCls}-group-wrapper-lg`]: mergedSize === 'large',
+        [`${prefixCls}-group-wrapper-rtl`]: direction === 'rtl',
+        [`${prefixCls}-group-wrapper-${variant}`]: enableVariantCls,
+      },
+      getStatusClassNames(`${prefixCls}-group-wrapper`, mergedStatus, hasFeedback),
+      hashId,
+    ),
+  });
+
   return wrapCSSVar(
     <RcInput
       ref={composeRef(ref, inputRef)}
@@ -188,7 +231,7 @@ const Input = forwardRef<InputRef, InputProps>((props, ref) => {
       styles={{ ...input?.styles, ...styles }}
       suffix={suffixNode}
       allowClear={mergedAllowClear}
-      className={classNames(
+      className={cx(
         className,
         rootClassName,
         cssVarCls,
@@ -215,50 +258,7 @@ const Input = forwardRef<InputRef, InputProps>((props, ref) => {
           </NoCompactStyle>
         )
       }
-      classNames={{
-        ...classes,
-        ...input?.classNames,
-        input: classNames(
-          {
-            [`${prefixCls}-sm`]: mergedSize === 'small',
-            [`${prefixCls}-lg`]: mergedSize === 'large',
-            [`${prefixCls}-rtl`]: direction === 'rtl',
-          },
-          classes?.input,
-          input?.classNames?.input,
-          hashId,
-        ),
-        variant: classNames(
-          {
-            [`${prefixCls}-${variant}`]: enableVariantCls,
-          },
-          getStatusClassNames(prefixCls, mergedStatus),
-        ),
-        affixWrapper: classNames(
-          {
-            [`${prefixCls}-affix-wrapper-sm`]: mergedSize === 'small',
-            [`${prefixCls}-affix-wrapper-lg`]: mergedSize === 'large',
-            [`${prefixCls}-affix-wrapper-rtl`]: direction === 'rtl',
-          },
-          hashId,
-        ),
-        wrapper: classNames(
-          {
-            [`${prefixCls}-group-rtl`]: direction === 'rtl',
-          },
-          hashId,
-        ),
-        groupWrapper: classNames(
-          {
-            [`${prefixCls}-group-wrapper-sm`]: mergedSize === 'small',
-            [`${prefixCls}-group-wrapper-lg`]: mergedSize === 'large',
-            [`${prefixCls}-group-wrapper-rtl`]: direction === 'rtl',
-            [`${prefixCls}-group-wrapper-${variant}`]: enableVariantCls,
-          },
-          getStatusClassNames(`${prefixCls}-group-wrapper`, mergedStatus, hasFeedback),
-          hashId,
-        ),
-      }}
+      classNames={classNames}
     />,
   );
 });
