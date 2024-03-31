@@ -15,8 +15,7 @@ exports[`Upload rtl render component should be rendered correctly in RTL directi
     >
       <input
         accept=""
-        class="ant-upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
     </span>

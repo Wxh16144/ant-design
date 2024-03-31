@@ -42170,8 +42170,7 @@ exports[`ConfigProvider components Upload configProvider 1`] = `
     >
       <input
         accept=""
-        class="config-upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />
@@ -42268,9 +42267,8 @@ exports[`ConfigProvider components Upload configProvider componentDisabled 1`] =
     >
       <input
         accept=""
-        class="config-upload-trigger"
         disabled=""
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />
@@ -42337,8 +42335,7 @@ exports[`ConfigProvider components Upload configProvider componentSize large 1`]
     >
       <input
         accept=""
-        class="config-upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />
@@ -42436,8 +42433,7 @@ exports[`ConfigProvider components Upload configProvider componentSize middle 1`
     >
       <input
         accept=""
-        class="config-upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />
@@ -42535,8 +42531,7 @@ exports[`ConfigProvider components Upload configProvider componentSize small 1`]
     >
       <input
         accept=""
-        class="config-upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />
@@ -42634,8 +42629,7 @@ exports[`ConfigProvider components Upload normal 1`] = `
     >
       <input
         accept=""
-        class="ant-upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />
@@ -42733,8 +42727,7 @@ exports[`ConfigProvider components Upload prefixCls 1`] = `
     >
       <input
         accept=""
-        class="prefix-Upload-trigger"
-        style="display: unset; visibility: hidden;"
+        style="display: none;"
         type="file"
       />
       <span />

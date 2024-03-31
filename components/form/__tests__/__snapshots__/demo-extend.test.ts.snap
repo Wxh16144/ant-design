@@ -5454,9 +5454,8 @@ Array [
                     >
                       <input
                         accept=""
-                        class="ant-upload-trigger"
                         disabled=""
-                        style="display: unset; visibility: hidden;"
+                        style="display: none;"
                         type="file"
                       />
                       <div>
@@ -20975,9 +20974,8 @@ exports[`renders components/form/demo/validate-other.tsx extend context correctl
                   <input
                     accept=""
                     aria-describedby="validate_other_upload_extra"
-                    class="ant-upload-trigger"
                     id="validate_other_upload"
-                    style="display: unset; visibility: hidden;"
+                    style="display: none;"
                     type="file"
                   />
                   <button
@@ -21066,9 +21064,8 @@ exports[`renders components/form/demo/validate-other.tsx extend context correctl
                 >
                   <input
                     accept=""
-                    class="ant-upload-trigger"
                     id="validate_other_dragger"
-                    style="display: unset; visibility: hidden;"
+                    style="display: none;"
                     type="file"
                   />
                   <div
