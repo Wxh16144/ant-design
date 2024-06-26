@@ -5,6 +5,7 @@ import {
   ConfigProvider,
   Divider,
   List,
+  Mentions,
   Select,
   Space,
   Switch,
@@ -12,11 +13,13 @@ import {
   Transfer,
   TreeSelect,
 } from 'antd';
+import type { ConfigProviderProps } from 'antd';
 
-const customizeRenderEmpty = () => (
+const customizeRenderEmpty: ConfigProviderProps['renderEmpty'] = (componentName) => (
   <div style={{ textAlign: 'center' }}>
     <SmileOutlined style={{ fontSize: 20 }} />
     <p>Data Not Found</p>
+    <i style={{ fontSize: 12 }}>source name: {componentName ?? 'Unknown'}</i>
   </div>
 );
 
@@ -46,13 +49,16 @@ const App: React.FC = () => {
           <h4>Table</h4>
           <Table
             style={{ marginTop: 8 }}
+            dataSource={[]}
             columns={[
-              { title: 'Name', dataIndex: 'name', key: 'name' },
-              { title: 'Age', dataIndex: 'age', key: 'age' },
+              { title: 'Name', key: 'name' },
+              { title: 'Age', key: 'age', filters: [] },
             ]}
           />
           <h4>List</h4>
           <List />
+          <h4>Mentions</h4>
+          <Mentions open />
         </Space>
       </ConfigProvider>
     </>
