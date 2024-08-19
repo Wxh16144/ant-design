@@ -7,6 +7,7 @@ import { createStyles, css } from 'antd-style';
 import classNames from 'classnames';
 import { FormattedMessage, useLiveDemo, useSiteData } from 'dumi';
 import LZString from 'lz-string';
+import isNil from 'lodash/isNil';
 
 import useLocation from '../../../hooks/useLocation';
 import BrowserFrame from '../../common/BrowserFrame';
@@ -137,16 +138,15 @@ const CodePreviewer: React.FC<AntdPreviewerProps> = (props) => {
   const { theme } = useContext<SiteContextProps>(SiteContext);
 
   const { hash, pathname, search } = location;
-  const docsOnlineUrl = `https://ant.design${pathname}${search}#${asset.id}`;
-
-  const [showOnlineUrl, setShowOnlineUrl] = useState<boolean>(false);
+  const [possiblePRId, setPossiblePRId] = useState<string | undefined>();
 
   useEffect(() => {
-    const regexp = /preview-(\d+)-ant-design/; // matching PR preview addresses
-    setShowOnlineUrl(
-      process.env.NODE_ENV === 'development' || regexp.test(window.location.hostname),
-    );
+    const RE = /preview-(\d+)-ant-design/;
+    setPossiblePRId(RE.exec(window.location.hostname)?.[1]);
   }, []);
+
+  const docsOnlineUrl = `https://ant.design${pathname}${search}#${asset.id}`;
+  const showOnlineUrl = process.env.NODE_ENV === 'development' || !isNil(possiblePRId);
 
   const handleCodeExpand = (demo: string) => {
     setCodeExpand((prev) => !prev);
@@ -220,6 +220,17 @@ const CodePreviewer: React.FC<AntdPreviewerProps> = (props) => {
 
   const suffix = codeType === 'tsx' ? 'tsx' : 'js';
 
+  const initialDependencies: Record<string, string> = {
+    antd: pkg.version, // always use current antd version
+  }
+
+  // 只有在可能的 PR 预览地址下才会有 PR 依赖
+  if (possiblePRId) {
+    // https://github.com/ant-design/ant-design/blob/master/.github/workflows/pkg.pr.new.yml
+    initialDependencies.antd = `https://pkg.pr.new/ant-design/ant-design/antd@${possiblePRId}`;
+    initialDependencies['official-antd'] = `npm:antd@${pkg.version}`;
+  }
+
   const dependencies = (jsx as string).split('\n').reduce<Record<PropertyKey, string>>(
     (acc, line) => {
       const matches = line.match(/import .+? from '(.+)';$/);
@@ -230,7 +241,7 @@ const CodePreviewer: React.FC<AntdPreviewerProps> = (props) => {
       }
       return acc;
     },
-    { antd: pkg.version },
+    initialDependencies,
   );
 
   dependencies['@ant-design/icons'] = 'latest';
